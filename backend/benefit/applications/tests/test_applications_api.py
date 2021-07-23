@@ -198,17 +198,17 @@ def test_application_put_edit_fields(api_client, application):
     modify existing application
     """
     data = ApplicationSerializer(application).data
-    data["company_contact_person_phone_number"] = "0505658789"
+    data["company_contact_person_phone_number"] = "+358505658789"
     response = api_client.put(
         get_detail_url(application),
         data,
     )
     assert response.status_code == 200
     assert (
-        response.data["company_contact_person_phone_number"] == "+358505658789"
+        response.data["company_contact_person_phone_number"] == "0505658789"
     )  # normalized format
     application.refresh_from_db()
-    assert application.company_contact_person_phone_number == "+358505658789"
+    assert application.company_contact_person_phone_number == "0505658789"
 
 
 def test_application_put_edit_employee(api_client, application):
@@ -225,7 +225,7 @@ def test_application_put_edit_employee(api_client, application):
     )
     assert response.status_code == 200
     assert (
-        response.data["employee"]["phone_number"] == "+358505658789"
+        response.data["employee"]["phone_number"] == "0505658789"
     )  # normalized format
     application.refresh_from_db()
     assert application.employee.phone_number == "+358505658789"
