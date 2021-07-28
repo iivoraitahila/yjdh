@@ -84,7 +84,7 @@ COPY --from=staticbuilder --chown=appuser:appuser app/shared/src/server/next-ser
 RUN yarn install --production --frozen-lockfile --check-files
 
 # install lerna
-RUN yarn global add lerna
+RUN yarn add lerna -W
 
 USER root
 # Use non-root user and add it to the root group (0)
@@ -92,9 +92,7 @@ RUN usermod -a -G 0 appuser
 # Sets the directory and file permissions to allow users in the root group to access them in the built image (for OpenShift)
 # https://docs.openshift.com/enterprise/3.2/creating_images/guidelines.html
 RUN chgrp -R 0 . \
-  && chmod -R g+rwX . \
-  && chgrp -R 0 /home/node \
-  && chmod -R g+rwX /home/node
+  && chmod -R g+rwX .
 USER appuser
 
 # Expose port
